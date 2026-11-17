@@ -241,7 +241,7 @@ footer li a:hover{color:var(--sand)}
 .pm-qty{display:flex;align-items:center;border:1px solid var(--line);border-radius:50px;background:var(--white)}
 .pm-qty button{width:40px;height:46px;border:none;background:none;font-size:18px;color:var(--ink)}
 .pm-qty span{min-width:22px;text-align:center;font-weight:700}
-.pm-add{flex:1;border:none;background:var(--ink);color:var(--sand);border-radius:50px;height:48px;font-size:16px;font-weight:700;transition:.2s}
+.pm-add{flex:1;white-space:nowrap;padding:0 14px;border:none;background:var(--ink);color:var(--sand);border-radius:50px;height:48px;font-size:16px;font-weight:700;transition:.2s}
 .pm-add:hover{background:var(--deep)}
 @media (max-width:760px){.pm{grid-template-columns:1fr;max-height:94vh}.pm-img{aspect-ratio:1/1}.pm-body{padding:22px 20px}}
 
@@ -263,6 +263,8 @@ footer li a:hover{color:var(--sand)}
 .pm-colors button.on{box-shadow:0 0 0 2px var(--ink)}
 .pm-lbl em{font-style:normal;font-weight:400;color:var(--muted)}
 
+.pm-ask{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;height:44px;border:1.5px solid #2F7D5B;color:#2F7D5B;border-radius:50px;font-weight:700;font-size:14px;transition:.2s}
+.pm-ask:hover{background:#2F7D5B;color:#fff}
 @media (max-width:960px){
   .cats{grid-template-columns:repeat(2,1fr)}
   .grid{grid-template-columns:repeat(3,1fr)}
@@ -623,6 +625,11 @@ function openP(id){
   pmId=id; pmQty=1; pmI=0; sel[id]=sel[id]||p.s[1]||p.s[0];
   drawImg(); drawP(); document.getElementById('pmOv').classList.add('show'); document.body.style.overflow='hidden';
 }
+function askLink(p){
+  const c=cName(p,selC[p.id]);
+  const msg=`مرحباً Velora 👋\nعندي استفسار عن: ${p.name}${c?' (لون '+c+')':''}${sel[p.id]?' · مقاس '+sel[p.id]:''}\nهل القطعة متوفرة؟ وكم مدة التوصيل؟`;
+  return 'https://wa.me/'+PHONE+'?text='+encodeURIComponent(msg);
+}
 function drawP(){
   const p=products.find(x=>x.id===pmId);
   const off=p.old?Math.round((1-p.price/p.old)*100):0;
@@ -639,8 +646,9 @@ function drawP(){
     <div class="sizes">${p.s.map(z=>`<button class="size ${sel[p.id]===z?'sel':''}" onclick="sel[${p.id}]='${z}';drawP();render()">${z}</button>`).join('')}</div>
     <div class="pm-actions">
       <div class="pm-qty"><button onclick="pmQty++;drawP()">+</button><span>${pmQty}</span><button onclick="pmQty=Math.max(1,pmQty-1);drawP()">−</button></div>
-      <button class="pm-add" onclick="addP()">🛍 أضف إلى السلة${p.price==null?'':' · '+p.price*pmQty+' د.أ'}</button>
-    </div>`;
+      <button class="pm-add" onclick="addP()">🛍 أضف للسلة${p.price==null?'':' · '+p.price*pmQty+' د.أ'}</button>
+    </div>
+    <a class="pm-ask" target="_blank" rel="noopener" href="${askLink(p)}">💬 استفسار عن هالقطعة على واتساب</a>`;
 }
 function addP(){
   const s=sel[pmId], c=selC[pmId]||0, ex=cart.find(i=>i.id===pmId&&i.s===s&&(i.c||0)===c);
