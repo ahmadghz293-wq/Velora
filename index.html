@@ -508,19 +508,20 @@ function art(type,c,d,bg1,bg2,id,z){z=z||1;return `<svg viewBox="0 0 400 500" pr
 
 /* ===== المنتجات (تجريبية) ===== */
 const products = [
+  {id:20,cat:'teens',sub:'هوديز',name:'هودي Stingers Center',price:null,old:null,tag:'جديد',colors:[{name:'بيج',hex:'#F1EAD6',imgs:['img/hoodie-cream.jpg','img/set-cream-gray.jpg']},{name:'زهري',hex:'#F2C4C8',imgs:['img/hoodie-pink.jpg','img/set-pink-navy.jpg']}],s:['12Y','14Y','16Y','18Y']},
+  {id:21,cat:'teens',sub:'بيجامات',name:'بنطلون بيجامة ستريت مبطّن فرو',price:6,old:null,tag:'جديد',colors:[{name:'كحلي',hex:'#1F2A44',imgs:['img/pants-navy.jpg','img/set-white-navy.jpg']},{name:'رمادي',hex:'#B3B5B8',imgs:['img/pants-gray.jpg','img/set-black-gray.jpg']}],s:['حتى 15 سنة']},
+  {id:22,cat:'teens',sub:'تيشيرتات',name:'تيشيرت Street School قطن',price:6,old:null,tag:'جديد',colors:[{name:'أبيض',hex:'#F4F3EF',imgs:['img/tee-white.jpg','img/set-white-navy.jpg']},{name:'أسود',hex:'#1E1E22',imgs:['img/tee-black.jpg','img/set-black-gray.jpg']}],s:['14 سنة']},
+  {id:23,cat:'teens',sub:'أطقم جاهزة',name:'طقم تيشيرت + بنطلون مبطّن',price:null,old:null,tag:'جديد',colors:[{name:'أبيض + كحلي',hex:'#F4F3EF',imgs:['img/set-white-navy.jpg','img/tee-white.jpg','img/pants-navy.jpg']},{name:'أسود + رمادي',hex:'#1E1E22',imgs:['img/set-black-gray.jpg','img/tee-black.jpg','img/pants-gray.jpg']}],s:['14 سنة']},
+  {id:24,cat:'teens',sub:'أطقم جاهزة',name:'طقم هودي + بنطلون مبطّن',price:null,old:null,tag:'جديد',colors:[{name:'بيج + رمادي',hex:'#F1EAD6',imgs:['img/set-cream-gray.jpg','img/hoodie-cream.jpg','img/pants-gray.jpg']},{name:'زهري + كحلي',hex:'#F2C4C8',imgs:['img/set-pink-navy.jpg','img/hoodie-pink.jpg','img/pants-navy.jpg']}],s:['12Y','14Y','16Y','18Y']},
 ];
 const BG = ['#F4ECE0','#E9DCC8'];
 
 /* hero / cats */
 function fill(id,src){document.getElementById(id).innerHTML=`<img src="${src}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">`}
-const ph=(t,z)=>`<div style="width:100%;height:100%;display:grid;place-items:center;background:linear-gradient(160deg,#F4ECE0,#E2D3BC)"><span style="font-family:Cormorant Garamond,serif;font-size:${z};color:#B89F7E;opacity:.6;line-height:1">${t}</span></div>`;
-document.getElementById('heroA').innerHTML=ph('V','220px');
-document.getElementById('heroB').innerHTML=ph('✦','90px');
-document.getElementById('cat1').innerHTML=ph('01','120px');
-document.getElementById('cat2').innerHTML=ph('02','120px');
-document.getElementById('cat3').innerHTML=ph('03','120px');
-document.getElementById('cat4').innerHTML=ph('04','120px');
-document.getElementById('aboutImg').innerHTML=ph('VELORA','90px');
+function fill(id,src){document.getElementById(id).innerHTML=`<img src="${src}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">`}
+fill('heroA','img/set-cream-gray.jpg'); fill('heroB','img/set-black-gray.jpg');
+fill('cat1','img/pants-navy.jpg'); fill('cat2','img/tee-white.jpg'); fill('cat3','img/hoodie-pink.jpg'); fill('cat4','img/set-pink-navy.jpg');
+fill('aboutImg','img/set-white-navy.jpg');
 
 /* grid */
 let current='all', favs=new Set(), sel={};
@@ -538,7 +539,7 @@ function render(){
         <small>${p.sub}</small>
         <h3 onclick="openP(${p.id})">${p.name}</h3>${p.desc?`<p class="desc">${p.desc}</p>`:''}${colorsOf(p).length>1?`<div class="dots">${colorsOf(p).map((c,i)=>`<button class="dot ${(selC[p.id]||0)===i?'on':''}" style="background:${c.hex}" title="${c.name}" aria-label="${c.name}" onclick="selC[${p.id}]=${i};render()"></button>`).join('')}</div>`:''}
         <div class="sizes">${p.s.map(s=>`<button class="size ${sel[p.id]===s?'sel':''}" onclick="pick(${p.id},'${s}')">${s}</button>`).join('')}</div>
-        <div class="row"><div class="price">${p.old?`<del>${p.old}</del>`:''}${p.price} د.أ</div>
+        <div class="row"><div class="price">${p.price==null?'<span style="font-size:13px;font-weight:700;color:var(--deep)">السعر عند الطلب</span>':(p.old?`<del>${p.old}</del>`:'')+p.price+' د.أ'}</div>
         <button class="add" onclick="add(${p.id})">+ أضف</button></div>
       </div></div>`}).join('');
 }
@@ -566,14 +567,15 @@ function updateCart(){
   if(!cart.length){box.innerHTML='<div class="empty"><div>🛍</div>سلتك فاضية<br><small>ضيف قطع حلوة من المتجر</small></div>'}
   else box.innerHTML=cart.map((it,i)=>{const p=products.find(x=>x.id===it.id);return `<div class="it">
     <div class="mini">${pic(p,'m'+i,it.c||0)}</div>
-    <div class="d"><b>${p.name}</b><small>${cName(p,it.c)?'اللون: '+cName(p,it.c)+' · ':''}المقاس: ${it.s} · ${p.price} د.أ</small>
+    <div class="d"><b>${p.name}</b><small>${cName(p,it.c)?'اللون: '+cName(p,it.c)+' · ':''}المقاس: ${it.s} · ${p.price==null?'السعر عند الطلب':p.price+' د.أ'}</small>
     <div class="qty"><button onclick="chg(${i},1)">+</button><span>${it.q}</span><button onclick="chg(${i},-1)">−</button>
     <button class="rm" onclick="chg(${i},-${it.q})">حذف</button></div></div></div>`}).join('');
-  const total=cart.reduce((a,it)=>a+products.find(x=>x.id===it.id).price*it.q,0);
-  document.getElementById('total').textContent=total+' د.أ';
+  const total=cart.reduce((a,it)=>a+(products.find(x=>x.id===it.id).price||0)*it.q,0);
+  const hasAsk=cart.some(it=>products.find(x=>x.id===it.id).price==null);
+  document.getElementById('total').textContent=total+' د.أ'+(hasAsk?' + عند الطلب':'');
   const wa=document.getElementById('waBtn');
   if(cart.length){
-    let msg='مرحباً Velora 👋 بدي أطلب:\n'+cart.map(it=>{const p=products.find(x=>x.id===it.id);return `• ${p.name}${cName(p,it.c)?' | لون '+cName(p,it.c):''} | مقاس ${it.s} | عدد ${it.q} | ${p.price*it.q} د.أ`}).join('\n')+`\n\nالمجموع: ${total} د.أ`;
+    let msg='مرحباً Velora 👋 بدي أطلب:\n'+cart.map(it=>{const p=products.find(x=>x.id===it.id);return `• ${p.name}${cName(p,it.c)?' | لون '+cName(p,it.c):''} | مقاس ${it.s} | عدد ${it.q} | ${p.price==null?'السعر: بدي أعرفه':p.price*it.q+' د.أ'}`}).join('\n')+`\n\nالمجموع: ${total} د.أ${hasAsk?' (بدون القطع اللي سعرها عند الطلب)':''}`;
     wa.href='https://wa.me/'+PHONE+'?text='+encodeURIComponent(msg);wa.classList.remove('off');
   } else {wa.removeAttribute('href');wa.classList.add('off')}
 }
@@ -587,6 +589,11 @@ document.querySelectorAll('.links a').forEach(a=>a.onclick=()=>document.querySel
 
 /* ===== صفحة تفاصيل المنتج ===== */
 const SPECS = {
+  20:{'القصّة':'هودي مع قبّعة ورباط','الجيب':'جيب أمامي (كنغر)','الطباعة':'Stingers Center أمامية','الموسم':'شتوي'},
+  21:{'الخامة':'قطن 100%','البطانة':'فرو من الداخل','القصّة':'ستريت (مستقيم)','العمر':'حتى 15 سنة','الوزن الأقصى':'50 كغ','الموسم':'شتوي'},
+  22:{'الخامة':'قطن','العمر':'14 سنة','الطباعة':'أمامية وخلفية','الموسم':'صيفي'},
+  23:{'القطع':'تيشيرت Street School + بنطلون بيجامة مبطّن','الخامة':'قطن','العمر':'14 سنة'},
+  24:{'القطع':'هودي Stingers Center + بنطلون بيجامة مبطّن','البنطلون':'قطن 100% مبطّن فرو','الموسم':'شتوي'},
 };
 let pmId=null, pmQty=1, pmI=0;
 function drawImg(){
@@ -609,7 +616,7 @@ function drawP(){
   document.getElementById('pmBody').innerHTML=`
     <small>${p.sub}</small>
     <h2>${p.name}</h2>
-    <div class="pm-price"><b>${p.price} د.أ</b>${p.old?`<del>${p.old} د.أ</del><span class="pm-off">خصم ${off}%</span>`:''}</div>
+    <div class="pm-price"><b>${p.price==null?'السعر عند الطلب':p.price+' د.أ'}</b>${p.old?`<del>${p.old} د.أ</del><span class="pm-off">خصم ${off}%</span>`:''}</div>
     ${p.old?`<div class="pm-save">بتوفّر ${p.old-p.price} د.أ</div>`:'<div style="height:10px"></div>'}
     ${Object.keys(specs).length?`<div class="pm-lbl">المواصفات</div><div class="pm-specs">${Object.entries(specs).map(([k,v])=>`<div><span>${k}</span><b>${v}</b></div>`).join('')}</div>`:''}
     ${colorsOf(p)[0].name?`<div class="pm-lbl">اللون: <em>${cName(p,selC[p.id])}</em></div>
@@ -618,7 +625,7 @@ function drawP(){
     <div class="sizes">${p.s.map(z=>`<button class="size ${sel[p.id]===z?'sel':''}" onclick="sel[${p.id}]='${z}';drawP();render()">${z}</button>`).join('')}</div>
     <div class="pm-actions">
       <div class="pm-qty"><button onclick="pmQty++;drawP()">+</button><span>${pmQty}</span><button onclick="pmQty=Math.max(1,pmQty-1);drawP()">−</button></div>
-      <button class="pm-add" onclick="addP()">🛍 أضف إلى السلة · ${p.price*pmQty} د.أ</button>
+      <button class="pm-add" onclick="addP()">🛍 أضف إلى السلة${p.price==null?'':' · '+p.price*pmQty+' د.أ'}</button>
     </div>`;
 }
 function addP(){
