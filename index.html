@@ -446,12 +446,13 @@ footer li a:hover{color:var(--sand)}
       </div>
       <form class="form" id="cform">
         <h3>ابعث لنا رسالة</h3>
-        <input required placeholder="الاسم">
-        <input required placeholder="رقم الهاتف" type="tel">
-        <select><option>استفسار عن منتج</option><option>طلب خاص</option><option>استبدال / إرجاع</option><option>غير ذلك</option></select>
-        <textarea placeholder="رسالتك..."></textarea>
-        <button class="btn btn-dark" type="submit">إرسال</button>
-        <div class="ok" id="ok">شكراً لتواصلك! (هذا نموذج تجريبي، الرسالة لم تُرسل فعلياً، وسيتم ربطه لاحقاً)</div>
+        <input required id="cfName" placeholder="الاسم">
+        <input required id="cfPhone" placeholder="رقم الهاتف" type="tel" inputmode="tel">
+        <select id="cfType"><option>استفسار عن منتج</option><option>طلب خاص</option><option>استبدال / إرجاع</option><option>غير ذلك</option></select>
+        <textarea required id="cfMsg" placeholder="اكتب استفسارك هون..."></textarea>
+        <button class="btn btn-dark" type="submit">💬 إرسال عبر واتساب</button>
+        <small style="color:var(--muted);font-size:12px;text-align:center">بيفتح واتساب ومعه رسالتك جاهزة، بس اكبس إرسال</small>
+        <div class="ok" id="ok">✓ فتحنا لك واتساب ورسالتك جاهزة. اكبس إرسال هناك وبنرد عليك بأقرب وقت 💛</div>
       </form>
     </div>
   </div>
@@ -624,7 +625,14 @@ function openCart(){document.getElementById('drawer').classList.add('show');docu
 function closeCart(){document.getElementById('drawer').classList.remove('show');document.getElementById('ov').classList.remove('show')}
 let tt;function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('show'),1800)}
 
-document.getElementById('cform').addEventListener('submit',e=>{e.preventDefault();document.getElementById('ok').style.display='block';e.target.reset()});
+document.getElementById('cform').addEventListener('submit',e=>{
+  e.preventDefault();
+  const v=id=>document.getElementById(id).value.trim();
+  const msg=`مرحباً Velora 👋\nنوع الاستفسار: ${v('cfType')}\nالاسم: ${v('cfName')}\nرقم الهاتف: ${v('cfPhone')}\n\n${v('cfMsg')}`;
+  const url='https://wa.me/'+PHONE+'?text='+encodeURIComponent(msg);
+  const w=window.open(url,'_blank','noopener'); if(!w) location.href=url;
+  document.getElementById('ok').style.display='block'; e.target.reset();
+});
 document.querySelectorAll('.links a').forEach(a=>a.onclick=()=>document.querySelector('.links').classList.remove('open'));
 
 
