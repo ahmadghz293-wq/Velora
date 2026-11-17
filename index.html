@@ -265,6 +265,19 @@ footer li a:hover{color:var(--sand)}
 
 .pm-ask{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;height:44px;border:1.5px solid #2F7D5B;color:#2F7D5B;border-radius:50px;font-weight:700;font-size:14px;transition:.2s}
 .pm-ask:hover{background:#2F7D5B;color:#fff}
+/* rating */
+.rt-ov{position:fixed;inset:0;background:rgba(59,49,40,.55);z-index:95;display:none;align-items:center;justify-content:center;padding:20px}
+.rt-ov.show{display:flex}
+.rt{background:var(--bg);border-radius:24px;max-width:380px;width:100%;padding:30px 26px;text-align:center;animation:pmIn .3s ease}
+.rt h3{font-size:22px;margin-bottom:4px}
+.rt p{color:var(--muted);font-size:14px;margin-bottom:18px}
+.stars-in{display:flex;justify-content:center;gap:6px;direction:ltr;margin-bottom:20px}
+.stars-in button{background:none;border:none;font-size:40px;line-height:1;color:#DDD0BC;transition:transform .15s,color .15s;padding:0 2px}
+.stars-in button.on{color:#E2A93B}
+.stars-in button:hover{transform:scale(1.15)}
+.rt-send{width:100%;height:48px;border:none;border-radius:50px;background:var(--ink);color:var(--sand);font-weight:700;font-size:16px}
+.rt-send:disabled{opacity:.4}
+.rt-skip{background:none;border:none;color:var(--taupe);font-size:13px;margin-top:12px;text-decoration:underline}
 @media (max-width:960px){
   .cats{grid-template-columns:repeat(2,1fr)}
   .grid{grid-template-columns:repeat(3,1fr)}
@@ -393,8 +406,8 @@ footer li a:hover{color:var(--sand)}
       <p>بدأنا فيلورا بفكرة وحدة: إنه اللبس الحلو ما لازم يكون معقد أو غالي. بنختار كل قطعة بعناية، من الخامة للخياطة للون، عشان تلبسها براحة وتحس بالثقة.</p>
       <p>عنا تشكيلة شبابية بألوان هادئة وقصّات عصرية، بتلبسها براحة وبتطلع فيها مميّز.</p>
       <div class="stats">
-        <div><b>+5000</b><span>زبون سعيد</span></div>
-        <div><b>+300</b><span>تصميم</span></div>
+        <div><b id="happyN">0</b><span>زبون سعيد</span></div>
+        <div><b id="avgN">–</b><span id="avgL">تقييم الزبائن</span></div>
         <div><b>4</b><span>أقسام</span></div>
       </div>
     </div>
@@ -473,6 +486,18 @@ footer li a:hover{color:var(--sand)}
   <div class="pm" role="dialog" aria-modal="true">
     <div class="pm-img" id="pmImg"><button class="pm-x" onclick="closeP()" aria-label="إغلاق">×</button></div>
     <div class="pm-body" id="pmBody"></div>
+  </div>
+</div>
+<div class="rt-ov" id="rtOv">
+  <div class="rt" role="dialog" aria-modal="true">
+    <div id="rtBody">
+      <div style="font-size:38px;margin-bottom:6px">💛</div>
+      <h3>شكراً لطلبك!</h3>
+      <p>كيف كانت تجربتك مع Velora؟</p>
+      <div class="stars-in" id="starsIn"><button aria-label="1 نجوم" data-n="1">★</button><button aria-label="2 نجوم" data-n="2">★</button><button aria-label="3 نجوم" data-n="3">★</button><button aria-label="4 نجوم" data-n="4">★</button><button aria-label="5 نجوم" data-n="5">★</button></div>
+      <button class="rt-send" id="rtSend" disabled>أرسل التقييم</button>
+      <button class="rt-skip" onclick="closeRt()">مش هلأ</button>
+    </div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -657,6 +682,35 @@ function addP(){
 }
 function closeP(){document.getElementById('pmOv').classList.remove('show');document.body.style.overflow=''}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeP()});
+
+/* ===== التقييم وعدّاد الزبائن السعيدين ===== */
+function showStats(d){
+  if(!d) return;
+  document.getElementById('happyN').textContent=d.happy;
+  if(d.count>0){document.getElementById('avgN').textContent='★ '+d.avg;document.getElementById('avgL').textContent='تقييم ('+d.count+')';}
+}
+fetch('/api/rating').then(r=>r.ok?r.json():null).then(showStats).catch(()=>{});
+let rtStars=0;
+function openRt(){
+  let last=0; try{last=+localStorage.getItem('velora_rated')||0}catch(e){}
+  if(Date.now()-last<24*3600*1000) return;           // تقييم واحد باليوم لكل زبون
+  rtStars=0; paintStars(); document.getElementById('rtSend').disabled=true;
+  document.getElementById('rtOv').classList.add('show');
+}
+function closeRt(){document.getElementById('rtOv').classList.remove('show')}
+function paintStars(){document.querySelectorAll('#starsIn button').forEach(b=>b.classList.toggle('on',+b.dataset.n<=rtStars))}
+document.querySelectorAll('#starsIn button').forEach(b=>b.onclick=()=>{rtStars=+b.dataset.n;paintStars();document.getElementById('rtSend').disabled=false});
+document.getElementById('rtSend').onclick=async()=>{
+  const btn=document.getElementById('rtSend'); btn.disabled=true; btn.textContent='لحظة...';
+  try{
+    const r=await fetch('/api/rating',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({stars:rtStars})});
+    if(r.ok) showStats(await r.json());
+  }catch(e){}
+  try{localStorage.setItem('velora_rated',Date.now())}catch(e){}
+  document.getElementById('rtBody').innerHTML='<div style="font-size:42px">🎉</div><h3>شكراً إلك!</h3><p>تقييمك بيساعدنا نصير أحسن</p><button class="rt-send" onclick="closeRt()">تمام</button>';
+};
+document.getElementById('rtOv').addEventListener('click',e=>{if(e.target.id==='rtOv')closeRt()});
+document.getElementById('waBtn').addEventListener('click',()=>{if(cart.length) setTimeout(()=>{closeCart();openRt()},1200)});
 
 render();updateCart();
 </script>
