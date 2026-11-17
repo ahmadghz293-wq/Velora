@@ -307,8 +307,8 @@ footer li a:hover{color:var(--sand)}
   <div class="wrap">
     <div>
       <span class="eyebrow">مجموعة شتاء 2026 وصلت ✦</span>
-      <h1>ستايلك المريح<br>بعمر <span>12 – 18</span></h1>
-      <p>في فيلورا بنختار لك قطع شبابية بخامات مريحة وتصاميم عصرية، لأعمار 12 – 18 سنة، بأسعار بتناسبك.</p>
+      <h1>ستايلك،<br>على <span>طريقتك</span></h1>
+      <p>في فيلورا بنختار لك قطع شبابية بخامات مريحة وتصاميم عصرية، بتناسب المدرسة والطلعات والبيت، وبأسعار بتناسبك.</p>
       <div class="btns">
         <a href="#shop" class="btn btn-dark">تسوّق الآن</a>
         <a href="#categories" class="btn btn-ghost">تصفح الأقسام</a>
@@ -389,7 +389,7 @@ footer li a:hover{color:var(--sand)}
       <div class="latin" style="color:var(--taupe);font-size:18px;font-style:italic">Our Story</div>
       <h2>فيلورا… ذوق بسيط بيدوم</h2>
       <p>بدأنا فيلورا بفكرة وحدة: إنه اللبس الحلو ما لازم يكون معقد أو غالي. بنختار كل قطعة بعناية، من الخامة للخياطة للون، عشان تلبسها براحة وتحس بالثقة.</p>
-      <p>عنا تشكيلة شبابية لأعمار 12 – 18 سنة، بألوان هادئة وقصّات عصرية بتناسب المدرسة والطلعات والبيت.</p>
+      <p>عنا تشكيلة شبابية بألوان هادئة وقصّات عصرية، بتلبسها براحة وبتطلع فيها مميّز.</p>
       <div class="stats">
         <div><b>+5000</b><span>زبون سعيد</span></div>
         <div><b>+300</b><span>تصميم</span></div>
@@ -447,7 +447,7 @@ footer li a:hover{color:var(--sand)}
     <div class="fgrid">
       <div>
         <div class="logo">VELORA</div>
-        <p style="margin-top:10px;font-size:14px;max-width:280px">أزياء شبابية مريحة لأعمار 12 – 18 سنة.</p>
+        <p style="margin-top:10px;font-size:14px;max-width:280px">أزياء شبابية مريحة وعصرية.</p>
         <div class="social"><a href="#">IG</a><a href="#">FB</a><a href="#">TT</a></div>
       </div>
       <div><h4>الأقسام</h4><ul><li><a href="#shop" onclick="filter('بيجامات')">بيجامات</a></li><li><a href="#shop" onclick="filter('تيشيرتات')">تيشيرتات</a></li><li><a href="#shop" onclick="filter('هوديز')">هوديز</a></li><li><a href="#shop" onclick="filter('أطقم جاهزة')">أطقم جاهزة</a></li></ul></div>
@@ -535,7 +535,7 @@ function render(){
         <button class="fav ${favs.has(p.id)?'on':''}" onclick="event.stopPropagation();fav(${p.id})" aria-label="مفضلة">${favs.has(p.id)?'♥':'♡'}</button>
       </div>
       <div class="info">
-        <small>${p.sub} · 12 – 18 سنة</small>
+        <small>${p.sub}</small>
         <h3 onclick="openP(${p.id})">${p.name}</h3>${p.desc?`<p class="desc">${p.desc}</p>`:''}${colorsOf(p).length>1?`<div class="dots">${colorsOf(p).map((c,i)=>`<button class="dot ${(selC[p.id]||0)===i?'on':''}" style="background:${c.hex}" title="${c.name}" aria-label="${c.name}" onclick="selC[${p.id}]=${i};render()"></button>`).join('')}</div>`:''}
         <div class="sizes">${p.s.map(s=>`<button class="size ${sel[p.id]===s?'sel':''}" onclick="pick(${p.id},'${s}')">${s}</button>`).join('')}</div>
         <div class="row"><div class="price">${p.old?`<del>${p.old}</del>`:''}${p.price} د.أ</div>
@@ -607,7 +607,7 @@ function drawP(){
   const off=p.old?Math.round((1-p.price/p.old)*100):0;
   const specs=SPECS[p.id]||{};
   document.getElementById('pmBody').innerHTML=`
-    <small>${p.sub} · 12 – 18 سنة</small>
+    <small>${p.sub}</small>
     <h2>${p.name}</h2>
     <div class="pm-price"><b>${p.price} د.أ</b>${p.old?`<del>${p.old} د.أ</del><span class="pm-off">خصم ${off}%</span>`:''}</div>
     ${p.old?`<div class="pm-save">بتوفّر ${p.old-p.price} د.أ</div>`:'<div style="height:10px"></div>'}
