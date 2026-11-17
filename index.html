@@ -513,13 +513,14 @@ const BG = ['#F4ECE0','#E9DCC8'];
 
 /* hero / cats */
 function fill(id,src){document.getElementById(id).innerHTML=`<img src="${src}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">`}
-document.getElementById('heroA').innerHTML = art('hoodie','#CDB898','#7A6246','#EADFCD','#DCCBB2','ha');
-document.getElementById('heroB').innerHTML = art('pants','#3A4660','#1E2638','#F6F0E6','#EADFCD','hb');
-document.getElementById('cat1').innerHTML = art('pants','#B9BBBE','#6E7074','#EFE4D3','#E0CFB6','c1');
-document.getElementById('cat2').innerHTML = art('kidtee','#2E3548','#9AA3B8','#EFE4D3','#E0CFB6','c2');
-document.getElementById('cat4').innerHTML = art('set','#C9B79C','#76614A','#EFE4D3','#E0CFB6','c4');
-document.getElementById('cat3').innerHTML = art('hoodie','#CDB898','#7A6246','#EFE4D3','#E0CFB6','ct');
-document.getElementById('aboutImg').innerHTML = art('kidtee','#F7F3EC','#B89F7E','#E2D3BC','#CDB998','ab');
+const ph=(t,z)=>`<div style="width:100%;height:100%;display:grid;place-items:center;background:linear-gradient(160deg,#F4ECE0,#E2D3BC)"><span style="font-family:Cormorant Garamond,serif;font-size:${z};color:#B89F7E;opacity:.6;line-height:1">${t}</span></div>`;
+document.getElementById('heroA').innerHTML=ph('V','220px');
+document.getElementById('heroB').innerHTML=ph('✦','90px');
+document.getElementById('cat1').innerHTML=ph('01','120px');
+document.getElementById('cat2').innerHTML=ph('02','120px');
+document.getElementById('cat3').innerHTML=ph('03','120px');
+document.getElementById('cat4').innerHTML=ph('04','120px');
+document.getElementById('aboutImg').innerHTML=ph('VELORA','90px');
 
 /* grid */
 let current='all', favs=new Set(), sel={};
