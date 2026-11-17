@@ -508,11 +508,11 @@ function art(type,c,d,bg1,bg2,id,z){z=z||1;return `<svg viewBox="0 0 400 500" pr
 
 /* ===== المنتجات (تجريبية) ===== */
 const products = [
-  {id:20,cat:'teens',sub:'هوديز',name:'هودي Stingers Center',price:null,old:null,tag:'جديد',colors:[{name:'بيج',hex:'#F1EAD6',imgs:['img/hoodie-cream.jpg','img/set-cream-gray.jpg']},{name:'زهري',hex:'#F2C4C8',imgs:['img/hoodie-pink.jpg','img/set-pink-navy.jpg']}],s:['12Y','14Y','16Y','18Y']},
+  {id:20,cat:'teens',sub:'هوديز',name:'هودي Stingers Center',price:5,old:7,tag:'خصم',colors:[{name:'بيج',hex:'#F1EAD6',imgs:['img/hoodie-cream.jpg','img/set-cream-gray.jpg']},{name:'زهري',hex:'#F2C4C8',imgs:['img/hoodie-pink.jpg','img/set-pink-navy.jpg']}],s:['12Y','14Y','16Y','18Y']},
   {id:21,cat:'teens',sub:'بيجامات',name:'بنطلون بيجامة ستريت مبطّن فرو',price:6,old:null,tag:'جديد',colors:[{name:'كحلي',hex:'#1F2A44',imgs:['img/pants-navy.jpg','img/set-white-navy.jpg']},{name:'رمادي',hex:'#B3B5B8',imgs:['img/pants-gray.jpg','img/set-black-gray.jpg']}],s:['حتى 15 سنة']},
   {id:22,cat:'teens',sub:'تيشيرتات',name:'تيشيرت Street School قطن',price:6,old:null,tag:'جديد',colors:[{name:'أبيض',hex:'#F4F3EF',imgs:['img/tee-white.jpg','img/set-white-navy.jpg']},{name:'أسود',hex:'#1E1E22',imgs:['img/tee-black.jpg','img/set-black-gray.jpg']}],s:['14 سنة']},
-  {id:23,cat:'teens',sub:'أطقم جاهزة',name:'طقم تيشيرت + بنطلون مبطّن',price:null,old:null,tag:'جديد',colors:[{name:'أبيض + كحلي',hex:'#F4F3EF',imgs:['img/set-white-navy.jpg','img/tee-white.jpg','img/pants-navy.jpg']},{name:'أسود + رمادي',hex:'#1E1E22',imgs:['img/set-black-gray.jpg','img/tee-black.jpg','img/pants-gray.jpg']}],s:['14 سنة']},
-  {id:24,cat:'teens',sub:'أطقم جاهزة',name:'طقم هودي + بنطلون مبطّن',price:null,old:null,tag:'جديد',colors:[{name:'بيج + رمادي',hex:'#F1EAD6',imgs:['img/set-cream-gray.jpg','img/hoodie-cream.jpg','img/pants-gray.jpg']},{name:'زهري + كحلي',hex:'#F2C4C8',imgs:['img/set-pink-navy.jpg','img/hoodie-pink.jpg','img/pants-navy.jpg']}],s:['12Y','14Y','16Y','18Y']},
+  {id:23,cat:'teens',sub:'أطقم جاهزة',name:'طقم تيشيرت + بنطلون مبطّن',price:10,old:14,tag:'خصم',colors:[{name:'أبيض + كحلي',hex:'#F4F3EF',imgs:['img/set-white-navy.jpg','img/tee-white.jpg','img/pants-navy.jpg']},{name:'أسود + رمادي',hex:'#1E1E22',imgs:['img/set-black-gray.jpg','img/tee-black.jpg','img/pants-gray.jpg']}],s:['14 سنة']},
+  {id:24,cat:'teens',sub:'أطقم جاهزة',name:'طقم هودي + بنطلون مبطّن',price:10,old:14,tag:'خصم',colors:[{name:'بيج + رمادي',hex:'#F1EAD6',imgs:['img/set-cream-gray.jpg','img/hoodie-cream.jpg','img/pants-gray.jpg']},{name:'زهري + كحلي',hex:'#F2C4C8',imgs:['img/set-pink-navy.jpg','img/hoodie-pink.jpg','img/pants-navy.jpg']}],s:['12Y','14Y','16Y','18Y']},
 ];
 const BG = ['#F4ECE0','#E9DCC8'];
 
@@ -589,11 +589,11 @@ document.querySelectorAll('.links a').forEach(a=>a.onclick=()=>document.querySel
 
 /* ===== صفحة تفاصيل المنتج ===== */
 const SPECS = {
-  20:{'القصّة':'هودي مع قبّعة ورباط','الجيب':'جيب أمامي (كنغر)','الطباعة':'Stingers Center أمامية','الموسم':'شتوي'},
+  20:{'الخامة':'قطن','القصّة':'هودي مع قبّعة ورباط','الجيب':'جيب أمامي (كنغر)','الطباعة':'Stingers Center أمامية','الموسم':'شتوي'},
   21:{'الخامة':'قطن 100%','البطانة':'فرو من الداخل','القصّة':'ستريت (مستقيم)','العمر':'حتى 15 سنة','الوزن الأقصى':'50 كغ','الموسم':'شتوي'},
   22:{'الخامة':'قطن','العمر':'14 سنة','الطباعة':'أمامية وخلفية','الموسم':'صيفي'},
   23:{'القطع':'تيشيرت Street School + بنطلون بيجامة مبطّن','الخامة':'قطن','العمر':'14 سنة'},
-  24:{'القطع':'هودي Stingers Center + بنطلون بيجامة مبطّن','البنطلون':'قطن 100% مبطّن فرو','الموسم':'شتوي'},
+  24:{'القطع':'هودي Stingers Center + بنطلون بيجامة مبطّن','الهودي':'قطن','البنطلون':'قطن 100% مبطّن فرو','الموسم':'شتوي'},
 };
 let pmId=null, pmQty=1, pmI=0;
 function drawImg(){
